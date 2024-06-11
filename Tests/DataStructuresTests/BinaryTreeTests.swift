@@ -166,6 +166,53 @@ final class BinaryTreeTests: XCTestCase {
 
         XCTAssertEqual(actualNode?.value, 3)
     }
+
+    func test_deleteValue_whenRootIsNil_itShouldReturnNil() {
+        XCTAssertNil(sut.root)
+
+        let actualNode = sut.deleteValue(3)
+
+        XCTAssertNil(actualNode)
+    }
+
+    func test_deleteValue_whenValueIsNotInTree_itShouldReturnSameTree() {
+        [1, 3, 5].forEach { value in
+            sut.insertValue(value)
+        }
+
+        let actualRoot = sut.deleteValue(2)
+
+        var preOrderTraversal: [String] = []
+        sut.preOrderTraversal(actualRoot) { node in
+            preOrderTraversal += [String(node.value)]
+        }
+
+        XCTAssertEqual(preOrderTraversal.joined(separator: ", "), "1, 3, 5")
+    }
+
+    /// Delete node and replace with deepest and rightmost node
+    func test_deleteValue_whenValueIsInTree_itShouldDeleteNodeWithValue() {
+        [1, 3, 5].forEach { value in
+            sut.insertValue(value)
+        }
+
+        let actualRoot = sut.deleteValue(1)
+
+        var preOrderTraversal: [String] = []
+        sut.preOrderTraversal(actualRoot) { node in
+            preOrderTraversal += [String(node.value)]
+        }
+
+        XCTAssertEqual(preOrderTraversal.joined(separator: ", "), "5, 3")
+    }
+
+    func test_deleteValue_whenTreeOnlyContainsValue_itShouldReturnEmptyTree() {
+        sut.insertValue(1)
+
+        let actualRoot = sut.deleteValue(1)
+
+        XCTAssertNil(actualRoot)
+    }
 }
 
 extension BinaryTree.Node: Equatable where T: Equatable {

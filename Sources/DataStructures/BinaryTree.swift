@@ -121,6 +121,59 @@ extension BinaryTree where T: Comparable {
 
         return nil
     }
+
+    @discardableResult
+    func deleteValue(_ value: T) -> Node? {
+        guard let root else {
+            return nil
+        }
+
+        // If tree has only one node, and we are deleting it
+        if root.left == nil, root.right == nil, root.value == value {
+            self.root = nil
+            return nil
+        }
+
+        var queue = [root]
+
+        var deepestNode: Node?
+        var nodeToDelete: Node?
+        var parentOfDeepestNode: Node?
+
+        while !queue.isEmpty {
+            let current = queue.removeFirst()
+
+            if current.value == value {
+                nodeToDelete = current
+            }
+
+            if let leftChild = current.left {
+                queue += [leftChild]
+                parentOfDeepestNode = current
+                deepestNode = leftChild
+            }
+
+            if let rightChild = current.right {
+                queue += [rightChild]
+                parentOfDeepestNode = current
+                deepestNode = rightChild
+            }
+        }
+
+        if let deepestNode, let nodeToDelete {
+            nodeToDelete.value = deepestNode.value
+
+            if let parentOfDeepestNode {
+                if parentOfDeepestNode.left === deepestNode {
+                    parentOfDeepestNode.left = nil
+                } else {
+                    parentOfDeepestNode.right = nil
+                }
+            }
+        }
+
+        return root
+    }
 }
 
 extension BinaryTree: BinaryTreeTraversal {}
