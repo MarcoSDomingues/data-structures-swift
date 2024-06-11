@@ -96,4 +96,31 @@ public final class BinaryTree<T> {
     }
 }
 
+extension BinaryTree where T: Comparable {
+    @discardableResult
+    func searchValue(_ value: T) -> Node? {
+        guard let root else {
+            return nil
+        }
+
+        var queue = [root]
+
+        while !queue.isEmpty {
+            let current = queue.removeFirst()
+
+            if current.value == value {
+                return current
+            }
+            if let leftChild = current.left {
+                queue += [leftChild]
+            }
+            if let rightChild = current.right {
+                queue += [rightChild]
+            }
+        }
+
+        return nil
+    }
+}
+
 extension BinaryTree: BinaryTreeTraversal {}

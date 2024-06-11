@@ -93,8 +93,6 @@ final class BinaryTreeTests: XCTestCase {
             preOrderTraversal += [String(node.value)]
         }
 
-        Character("a").asciiValue! - 
-
         XCTAssertEqual(preOrderTraversal.joined(separator: ", "), "1, 7, 2, 11, 5, 6, 9, 9, 5")
     }
 
@@ -111,7 +109,7 @@ final class BinaryTreeTests: XCTestCase {
         XCTAssertEqual(postOrderTraversal.joined(separator: ", "), "11, 5, 2, 6, 7, 9, 5, 9, 1")
     }
 
-    func test_invert_itShouldInvertTreeNodes() {
+    func test_invert_whenRootIsNotNil_itShouldInvertTreeNodes() {
         [1, 7, 9, 2, 6, 9, 5, 11, 5].forEach { value in
             sut.insertValue(value)
         }
@@ -131,6 +129,42 @@ final class BinaryTreeTests: XCTestCase {
         }
 
         XCTAssertEqual(inOrderTraversal.joined(separator: ", "), "5, 9, 9, 1, 6, 7, 5, 2, 11")
+    }
+
+    func test_invert_whenRootIsNil_itShouldReturnNilNode() {
+        XCTAssertNil(sut.root)
+
+        let actualNode = sut.invert()
+
+        XCTAssertNil(actualNode)
+    }
+
+    func test_searchValue_whenRootIsNil_itShouldReturnNil() {
+        XCTAssertNil(sut.root)
+
+        let actualNode = sut.searchValue(2)
+
+        XCTAssertNil(actualNode)
+    }
+
+    func test_searchValue_whenValueIsNotInTree_itShouldReturnNil() {
+        [1, 3, 5].forEach { value in
+            sut.insertValue(value)
+        }
+
+        let actualNode = sut.searchValue(2)
+
+        XCTAssertNil(actualNode)
+    }
+
+    func test_searchValue_whenValueIsInTree_itShouldReturnNode() {
+        [1, 3, 5].forEach { value in
+            sut.insertValue(value)
+        }
+
+        let actualNode = sut.searchValue(3)
+
+        XCTAssertEqual(actualNode?.value, 3)
     }
 }
 
