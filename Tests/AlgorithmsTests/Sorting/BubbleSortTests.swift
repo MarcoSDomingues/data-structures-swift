@@ -25,8 +25,24 @@ final class BubbleSortTests: XCTestCase {
         XCTAssertEqual(array, [1, 2, 3, 5])
     }
 
+    func test_bubbleSort_whenArrayHasNegativeNumbers() {
+        var array = [1, 5, -3, -6, 10]
+
+        array.bubbleSort()
+
+        XCTAssertEqual(array, [-6, -3, 1, 5, 10])
+    }
+
+    func test_bubbleSort_whenArrayIsEmpty() {
+        var array: [Int] = []
+
+        array.bubbleSort()
+
+        XCTAssertEqual(array, [])
+    }
+
     func test_bubbleSorted_shouldReturnSortedCopyOfArray() {
-        var array = [3, 5, 1, 2]
+        let array = [3, 5, 1, 2]
 
         let sorted = array.bubbleSorted()
 
