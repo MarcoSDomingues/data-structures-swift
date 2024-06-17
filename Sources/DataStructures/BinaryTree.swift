@@ -202,4 +202,45 @@ extension BinaryTree where T: Comparable {
     }
 }
 
+extension BinaryTree where T: Comparable {
+    /// Two binary trees are considered the same if they are structurally identical, 
+    /// and the nodes have the same value.
+    func isSameTree(_ other: BinaryTree) -> Bool {
+        if self.root == nil, other.root == nil {
+            return true
+        }
+
+        guard
+            let l = root,
+            let r = other.root,
+            l.value == r.value
+        else {
+            return false
+        }
+
+        var queue = [(l, r)]
+        while !queue.isEmpty {
+            let (l, r) = queue.removeFirst()
+
+            if l.value != r.value {
+                return false
+            }
+
+            if let leftL = l.left, let leftR = r.left {
+                queue += [(leftL, leftR)]
+            } else if l.left != nil || r.left != nil {
+                return false
+            }
+
+            if let rightL = l.right, let rightR = r.right {
+                queue += [(rightL, rightR)]
+            } else if l.right != nil || r.right != nil {
+                return false
+            }
+        }
+
+        return true
+    }
+}
+
 extension BinaryTree: BinaryTreeTraversal {}

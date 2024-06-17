@@ -229,6 +229,78 @@ final class BinaryTreeTests: XCTestCase {
 
         XCTAssertEqual(maximumDepth, 3)
     }
+
+    func test_isSameTree_whenBothTreesAreEmpty_itShouldReturnTrue() {
+        let other: BinaryTree<Int> = BinaryTree(root: nil)
+
+        let isSameTree = sut.isSameTree(other)
+
+        XCTAssertEqual(isSameTree, true)
+    }
+
+    func test_isSameTree_whenOtherTreeIsEmpty_itShouldReturnFalse() {
+        let other: BinaryTree<Int> = BinaryTree(root: nil)
+        sut.insertValue(1)
+
+        let isSameTree = sut.isSameTree(other)
+
+        XCTAssertEqual(isSameTree, false)
+    }
+
+    func test_isSameTree_whenTreeIsEmpty_itShouldReturnFalse() {
+        let other = BinaryTree(root: BinaryTree.Node(value: 1))
+        other.insertValue(1)
+
+        let isSameTree = sut.isSameTree(other)
+
+        XCTAssertEqual(isSameTree, false)
+    }
+
+    func test_isSameTree_whenTreesHaveSameStructureAndSameValueNodes_itShouldReturnTrue() {
+        let other: BinaryTree<Int> = BinaryTree(root: nil)
+        [2, 1, 4, 5, 1, 8].forEach { value in
+            sut.insertValue(value)
+            other.insertValue(value)
+        }
+
+        let isSameTree = sut.isSameTree(other)
+
+        XCTAssertEqual(isSameTree, true)
+    }
+
+    func test_isSameTree_whenTreesHaveSameStructureAndDifferentValueNodes_itShouldReturnFalse() {
+        let other: BinaryTree<Int> = BinaryTree(root: nil)
+        [2, 1, 4].forEach { value in
+            sut.insertValue(value)
+        }
+        [2, 1, 3].forEach { value in
+            other.insertValue(value)
+        }
+
+        let isSameTree = sut.isSameTree(other)
+
+        XCTAssertEqual(isSameTree, false)
+    }
+
+    func test_isSameTree_whenTreesHaveDifferentLeftSubTreeStructure_itShouldReturnFalse() {
+        sut = BinaryTree(root: BinaryTree.Node(value: 1))
+        let other = BinaryTree(root: BinaryTree.Node(value: 1))
+        sut.root?.left = BinaryTree.Node(value: 3)
+
+        let isSameTree = sut.isSameTree(other)
+
+        XCTAssertEqual(isSameTree, false)
+    }
+
+    func test_isSameTree_whenTreesHaveDifferentRightSubTreeStructure_itShouldReturnFalse() {
+        sut = BinaryTree(root: BinaryTree.Node(value: 1))
+        let other = BinaryTree(root: BinaryTree.Node(value: 1))
+        sut.root?.right = BinaryTree.Node(value: 3)
+
+        let isSameTree = sut.isSameTree(other)
+
+        XCTAssertEqual(isSameTree, false)
+    }
 }
 
 extension BinaryTree.Node: Equatable where T: Equatable {
