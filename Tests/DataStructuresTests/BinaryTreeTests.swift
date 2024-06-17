@@ -70,6 +70,8 @@ final class BinaryTreeTests: XCTestCase {
         XCTAssertEqual(sut.root?.count, 9)
     }
 
+    // MARK: - Tree Traversals
+
     func test_inOrderTraversal_itShouldTraverse_fromLeft_toRoot_andRight() {
         [1, 7, 9, 2, 6, 9, 5, 11, 5].forEach { value in
             sut.insertValue(value)
@@ -108,6 +110,37 @@ final class BinaryTreeTests: XCTestCase {
 
         XCTAssertEqual(postOrderTraversal.joined(separator: ", "), "11, 5, 2, 6, 7, 9, 5, 9, 1")
     }
+
+    func test_levelOrderTraversal_itShouldTraverseTheTreeByLevelFromTheRoot() {
+        let root = BinaryTree.Node(value: 3)
+        let node9 = BinaryTree.Node(value: 9)
+        let node20 = BinaryTree.Node(value: 20)
+        let node15 = BinaryTree.Node(value: 15)
+        let node7 = BinaryTree.Node(value: 7)
+        root.left = node9
+        root.right = node20
+        node20.left = node15
+        node20.right = node7
+        sut.insertNode(root)
+
+        var levelOrderTraversal: [String] = []
+        sut.levelOrderTraversal(sut.root) { node in
+            levelOrderTraversal += [String(node.value)]
+        }
+
+        XCTAssertEqual(levelOrderTraversal.joined(separator: ", "), "3, 9, 20, 15, 7")
+    }
+
+    func test_levelOrderTraversal_whenTreeIsEmpty_itShouldNotProcessNodes() {
+        var levelOrderTraversal: [String] = []
+        sut.levelOrderTraversal(sut.root) { node in
+            levelOrderTraversal += [String(node.value)]
+        }
+
+        XCTAssertEqual(levelOrderTraversal.joined(separator: ", "), "")
+    }
+
+    // MARK: - Invert Tree
 
     func test_invert_whenRootIsNotNil_itShouldInvertTreeNodes() {
         [1, 7, 9, 2, 6, 9, 5, 11, 5].forEach { value in

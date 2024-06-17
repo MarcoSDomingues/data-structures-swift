@@ -13,6 +13,7 @@ public protocol BinaryTreeTraversal {
     func inOrderTraversal(_ root: Node?, process: (Node) -> Void)
     func preOrderTraversal(_ root: Node?, process: (Node) -> Void)
     func postOrderTraversal(_ root: Node?, process: (Node) -> Void)
+    func levelOrderTraversal(_ root: Node?, process: (Node) -> Void)
 }
 
 public extension BinaryTreeTraversal {
@@ -44,5 +45,28 @@ public extension BinaryTreeTraversal {
         postOrderTraversal(root.left, process: process)
         postOrderTraversal(root.right, process: process)
         process(root)
+    }
+
+    /// Breadth First Search
+    func levelOrderTraversal(_ root: Node?, process: (Node) -> Void) {
+        guard let root else {
+            return
+        }
+
+        var queue = [root]
+        while !queue.isEmpty {
+            for _ in 0..<queue.count {
+                let current = queue.removeFirst()
+                process(current)
+
+                if let left = current.left {
+                    queue += [left]
+                }
+
+                if let right = current.right {
+                    queue += [right]
+                }
+            }
+        }
     }
 }
