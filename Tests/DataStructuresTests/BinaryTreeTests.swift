@@ -213,6 +213,22 @@ final class BinaryTreeTests: XCTestCase {
 
         XCTAssertNil(actualRoot)
     }
+
+    func test_maximumDepth_whenTreeIsEmpty_itShouldReturnZero() {
+        let maximumDepth = sut.maximumDepth()
+
+        XCTAssertEqual(maximumDepth, 0)
+    }
+
+    func test_maximumDepth_itShouldReturnNumberOfNodesAlongTheLongestPathFromRootDownToFarthestLeaf() {
+        [3, 9, 20, 15, 7].forEach { value in
+            sut.insertValue(value)
+        }
+
+        let maximumDepth = sut.maximumDepth()
+
+        XCTAssertEqual(maximumDepth, 3)
+    }
 }
 
 extension BinaryTree.Node: Equatable where T: Equatable {

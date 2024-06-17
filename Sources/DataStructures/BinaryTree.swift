@@ -94,6 +94,32 @@ public final class BinaryTree<T> {
 
         return root
     }
+
+    /// Returns the maximum number of nodes along the longest path
+    /// from the root node down to the farthest leaf node.
+    func maximumDepth() -> Int {
+        guard let root else {
+            return 0
+        }
+
+        var maxDepth = 0
+
+        var stack = [(root, 1)]
+        while !stack.isEmpty {
+            let (current, depth) = stack.removeLast()
+            maxDepth = max(maxDepth, depth)
+
+            if let left = current.left {
+                stack += [(left, depth + 1)]
+            }
+
+            if let right = current.right {
+                stack += [(right, depth + 1)]
+            }
+        }
+
+        return maxDepth
+    }
 }
 
 extension BinaryTree where T: Comparable {
